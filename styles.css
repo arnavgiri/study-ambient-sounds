@@ -115,3 +115,32 @@ body:fullscreen .page{padding-top:20px}
     grid-template-columns: 30px minmax(0, 1fr);
   }
 }
+
+
+/* Consistent low-profile scrollbars for pages and scrollable panels. */
+:root {
+  --theme-primary: var(--accent);
+  --theme-hover: var(--text, var(--fg, var(--accent)));
+}
+html {
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: var(--theme-primary) transparent;
+}
+body, .drawer, .settings-panel, textarea, [class*="scroll"] {
+  scrollbar-width: thin;
+  scrollbar-color: var(--theme-primary) transparent;
+}
+::-webkit-scrollbar { width: 6px; height: 6px; background: transparent; }
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-track-piece,
+::-webkit-scrollbar-corner { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--theme-primary);
+  border-radius: 0;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--theme-hover); }
+a {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
