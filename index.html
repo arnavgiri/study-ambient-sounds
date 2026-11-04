@@ -22,10 +22,10 @@
   </header>
 
   <main class="page">
-    <div class="status-wrap" style="text-align:center"><div class="status-pill" id="playStatus" role="status" aria-live="polite"><span class="status-dot"></span> Ready when you are</div></div>
+    
 
     <section class="mixer" aria-label="Ambient sound mixer">
-      <div class="mixer-heading"><h2>Soundscape</h2><span>Blend your own atmosphere</span></div>
+      <div class="mixer-heading"><h1>Soundscape</h1><p>Choose what you hear.</p></div>
       <div class="sound-grid">
         <article class="sound-card" data-sound="rain">
           <div class="sound-icon rain-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 26a11 11 0 0 1 2-21 14 14 0 0 1 24 9 8 8 0 0 1-2 16H12"/><path d="m15 34-3 7m14-7-3 7m14-7-3 7"/></svg></div>
@@ -73,12 +73,12 @@
     </section>
 
     <section class="player" aria-label="Playback controls">
-      <div class="player-left"><div class="visualizer" id="visualizer" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div><div class="player-label">Your soundscape</div><div class="player-detail" id="activeCount">No sounds selected</div></div></div>
+      <div class="player-left"><div class="visualizer" id="visualizer" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div><div class="player-label">Your soundscape</div><div class="player-detail" id="activeCount">No sounds selected</div><div class="status-pill" id="playStatus" role="status" aria-live="polite"><span class="status-dot"></span> Ready when you are</div></div></div>
       <div class="player-center"><button class="secondary-button" id="stopButton" type="button">Stop all</button><button class="primary-button" id="playButton" type="button"><span id="playSymbol" aria-hidden="true">▶</span><span id="playLabel">Play sounds</span></button></div>
       <div class="player-right"><label for="masterVolume">Master volume</label><input id="masterVolume" type="range" min="0" max="100" value="70" aria-label="Master volume"><output id="masterValue">70%</output></div>
     </section>
 
-    <footer class="footer">Crafted for calm, focused learning. <a href="https://biharkalyan.in" target="_blank" rel="noopener noreferrer">BiharKalyan.in</a><span class="footer-dot">•</span> Sound generated locally in your browser</footer>
+    <footer class="footer">Made for uninterrupted study. <a href="https://biharkalyan.in" target="_blank" rel="noopener noreferrer">BiharKalyan.in</a><span class="footer-dot">•</span> Sound generated locally in your browser</footer>
   </main>
 
   <div class="backdrop" id="backdrop"></div>
