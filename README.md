@@ -1,6 +1,6 @@
 # Study Ambient Sounds
 
-A calm, distraction-free ambient sound mixer for students, created for [BiharKalyan.in](https://biharkalyan.in).
+A calm, distraction-free ambient sound mixer for students.
 
 ## Features
 
