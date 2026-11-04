@@ -1,0 +1,31 @@
+name: Import public-domain thunder audio
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/import-thunder.yml
+
+permissions:
+  contents: write
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Download public-domain thunder recording
+        run: |
+          curl --fail --location --retry 3 --silent --show-error \
+            "https://upload.wikimedia.org/wikipedia/commons/4/42/Rain_and_thunder.ogg" \
+            --output thunder.ogg
+          test "$(wc -c < thunder.ogg)" -gt 100000
+      - name: Commit recording
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add thunder.ogg
+          if ! git diff --cached --quiet; then
+            git commit -m "Add public-domain thunder recording"
+            git push
+          fi
