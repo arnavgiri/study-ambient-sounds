@@ -1,0 +1,50 @@
+name: Update CSS cache version
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "styles.css"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  cache-bust:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Set version to current CSS content hash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          import subprocess
+
+          version = subprocess.check_output(
+              ["git", "hash-object", "styles.css"], text=True
+          ).strip()[:12]
+          path = Path("index.html")
+          html = path.read_text(encoding="utf-8")
+          updated, count = re.subn(
+              r'href="\./styles\.css(?:\?v=[a-f0-9]+)?"',
+              f'href="./styles.css?v={version}"',
+              html,
+          )
+          if count != 1:
+              raise SystemExit("Expected one local styles.css link")
+          if updated != html:
+              path.write_text(updated, encoding="utf-8")
+          PY
+      - name: Commit updated stylesheet version
+        run: |
+          if ! git diff --quiet -- index.html; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add index.html
+            git commit -m "Refresh CSS cache version"
+            git push
+          fi
