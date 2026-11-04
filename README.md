@@ -16,7 +16,7 @@ A calm, distraction-free ambient sound mixer for students.
 - Browser fullscreen mode (where supported)
 - Saves theme, selected sounds, volume levels and sleep timer duration with `localStorage`
 - Responsive design for desktop and mobile
-- No frameworks, external API calls, audio downloads or accounts
+- No frameworks or accounts; a bundled public-domain thunder recording complements the synthesized sounds
 
 ## Run locally
 
@@ -33,7 +33,7 @@ A calm, distraction-free ambient sound mixer for students.
 
 ## Notes
 
-All sounds are **synthetically generated using the Web Audio API**, so the app works offline after its files load. These are intentionally gentle approximations, not recordings of nature. Audio quality depends on speakers and headphones. The app does not play audio automatically; tap **Play sounds** after opening it. Mobile devices may restrict audio in the background or after the screen sleeps. The sleep countdown runs while the tab remains active and is not restored across page reloads. When playback is paused, the sleep timer pauses too.
+Rain, forest, fan, wind, and white noise are **synthetically generated using the Web Audio API**. Thunder uses a real 19-second rain-and-thunder recording, bundled as `thunder.ogg` (with a Wikimedia Commons online fallback). The app works offline after its files load when `thunder.ogg` is present. Audio quality depends on speakers and headphones. The app does not play audio automatically; tap **Play sounds** after opening it. Mobile devices may restrict audio in the background or after the screen sleeps. The sleep countdown runs while the tab remains active and is not restored across page reloads. When playback is paused, the sleep timer pauses too.
 
 The app stores preferences only in your browser. To clear them, remove the website's local storage data.
 
@@ -43,6 +43,11 @@ The app stores preferences only in your browser. To clear them, remove the websi
 - `styles.css` — layout, responsive styles and themes
 - `app.js` — sound synthesis, controls, persistence and sleep timer
 - `favicon.svg` — custom icon
+- `thunder.ogg` — real public-domain rain and thunder recording
+
+## Thunder audio credit
+
+"Rain and thunder.ogg" was recorded by [User:Caesar](https://commons.wikimedia.org/wiki/User:Caesar) and released into the public domain. [Source and license](https://commons.wikimedia.org/wiki/File:Rain_and_thunder.ogg).
 
 ## Author
 
