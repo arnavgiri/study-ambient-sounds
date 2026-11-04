@@ -38,3 +38,11 @@ body[data-theme="blue"]{color-scheme:light;--bg:#dcebf5;--bg2:#b8d7eb;--surface:
   .status-pill { margin-top: 0; }
 }
 /* Preserve access to content on short or narrow screens. */
+
+/* Six compact sound cards on wide desktops; responsive layouts stay intact. */
+@media (min-width: 1001px) {
+  .sound-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 11px; }
+  .sound-card { padding: 14px 12px 12px; }
+  .sound-name-row h3 { font-size: 15px; }
+  .sound-card p { font-size: 11px; }
+}
