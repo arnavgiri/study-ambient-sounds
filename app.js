@@ -89,6 +89,18 @@ class AmbientEngine {
     this.playing = false;
     this.birdInterval = null;
     this.thunderInterval = null;
+    this.thunderAudio = new Audio("./thunder.ogg");
+    this.thunderAudio.loop = true;
+    this.thunderAudio.preload = "auto";
+    this.thunderAudio.addEventListener("error", () => {
+      if (!this.thunderAudio.dataset.fallback) {
+        this.thunderAudio.dataset.fallback = "true";
+        this.thunderAudio.src = "https://upload.wikimedia.org/wikipedia/commons/4/42/Rain_and_thunder.ogg";
+        if (this.playing && settings.active.thunder) {
+          this.thunderAudio.play().catch(error => console.warn("Thunder recording unavailable:", error));
+        }
+      }
+    });
   }
 
   noiseBuffer(kind = "white") {
@@ -163,7 +175,7 @@ class AmbientEngine {
     this.filteredNoise("brown", "lowpass", 650, this.soundGains.get("fan"));
     this.filteredNoise("pink", "lowpass", 470, this.soundGains.get("wind"));
     this.makeSource(this.noiseBuffer("white"), this.soundGains.get("white"));
-    this.thunderBuffer = this.noiseBuffer("brown");
+    // The thunder channel uses a real, public-domain recording instead of synthetic noise.
 
     // Subtle fan motor fundamental.
     const hum = this.context.createOscillator();
@@ -192,11 +204,12 @@ class AmbientEngine {
     const now = this.context.currentTime;
     for (const name of SOUND_NAMES) {
       const gain = this.soundGains.get(name);
-      const target = settings.active[name] ? settings.volumes[name] / 100 * .52 : 0;
+      const target = name === "thunder" ? 0 : (settings.active[name] ? settings.volumes[name] / 100 * .52 : 0);
       gain.gain.cancelScheduledValues(now);
       gain.gain.setTargetAtTime(target, now, .08);
     }
     this.masterGain.gain.setTargetAtTime(settings.master / 100 * .72, now, .08);
+    this.updateThunderAudio();
   }
 
   chirp() {
@@ -222,62 +235,39 @@ class AmbientEngine {
   }
 
 
-  // Layered, softly filtered thunder rumbles are synthesized locally.
-  rumble() {
-    if (!this.playing || !settings.active.thunder || !this.context ||
-        this.context.state !== "running") return;
-    const ctx = this.context;
-    const now = ctx.currentTime;
-    const output = this.soundGains.get("thunder");
-    for (let layer = 0; layer < 3; layer++) {
-      const start = now + layer * 0.42;
-      const source = ctx.createBufferSource();
-      source.buffer = this.thunderBuffer;
-      const lowpass = ctx.createBiquadFilter();
-      lowpass.type = "lowpass";
-      lowpass.frequency.value = 100 + Math.random() * 115;
-      const envelope = ctx.createGain();
-      const intensity = layer === 0 ? 0.8 : 0.45;
-      envelope.gain.setValueAtTime(0.0001, start);
-      envelope.gain.exponentialRampToValueAtTime(
-        intensity, start + 0.32 + layer * 0.13
-      );
-      envelope.gain.exponentialRampToValueAtTime(0.0001, start + 4.8);
-      source.connect(lowpass);
-      lowpass.connect(envelope);
-      envelope.connect(output);
-      source.start(start);
-      source.stop(start + 5);
-      source.onended = () => {
-        source.disconnect();
-        lowpass.disconnect();
-        envelope.disconnect();
-      };
+  // Real public-domain recording, with independent and master volume.
+  updateThunderAudio() {
+    this.thunderAudio.volume = Math.min(
+      1, Math.max(0, settings.volumes.thunder / 100 * settings.master / 100)
+    );
+    if (this.playing && settings.active.thunder) {
+      if (this.thunderAudio.paused) {
+        this.thunderAudio.play().catch(error =>
+          console.warn("Thunder audio playback unavailable:", error)
+        );
+      }
+    } else {
+      this.thunderAudio.pause();
     }
-  }
-
-  scheduleThunder() {
-    if (this.thunderInterval) clearInterval(this.thunderInterval);
-    this.thunderInterval = setInterval(() => this.rumble(), 12500);
   }
 
   async play() {
     this.build();
     this.updateLevels();
-    await this.context.resume();
     this.playing = true;
+    // Start HTML audio before awaiting Web Audio to retain the user gesture.
+    this.updateThunderAudio();
+    await this.context.resume();
     if (!this.birdInterval) this.birdInterval = setInterval(() => this.chirp(), 3400);
     this.chirp();
-    this.scheduleThunder();
-    this.rumble();
+    this.updateThunderAudio();
   }
 
   async stop() {
     this.playing = false;
     if (this.birdInterval) clearInterval(this.birdInterval);
     this.birdInterval = null;
-    if (this.thunderInterval) clearInterval(this.thunderInterval);
-    this.thunderInterval = null;
+    this.thunderAudio.pause();
     if (this.context && this.context.state === "running") {
       await this.context.suspend();
     }
@@ -389,12 +379,14 @@ for (const name of SOUND_NAMES) {
     saveSettings();
     renderSoundCards();
     engine.updateLevels();
+    engine.updateThunderAudio();
   });
   document.querySelector(`[data-volume="${name}"]`).addEventListener("input", event => {
     settings.volumes[name] = validPercentage(event.target.value, 50);
     saveSettings();
     document.getElementById(`value-${name}`).textContent = settings.volumes[name] + "%";
     engine.updateLevels();
+    engine.updateThunderAudio();
   });
 }
 elements.masterVolume.value = String(settings.master);
