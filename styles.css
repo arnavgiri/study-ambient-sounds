@@ -117,7 +117,7 @@ body:fullscreen .page{padding-top:20px}
 }
 
 
-/* Shared slim scrollbar styling for the page and nested scroll areas. */
+/* BiharKalyan-style square scrollbar: narrow track, sharp edges. */
 :root {
   --theme-primary: var(--accent);
   --theme-hover: var(--text, var(--fg, var(--accent)));
@@ -125,18 +125,14 @@ body:fullscreen .page{padding-top:20px}
 html {
   overflow-y: scroll;
 }
-/* Firefox supports only auto and thin; WebKit browsers use 6px below. */
-@supports not selector(::-webkit-scrollbar) {
-  html, body, .drawer, .settings-panel, textarea {
+/* Firefox: its native scrollbar API supports a thin width but not pixels. */
+@supports (-moz-appearance: none) {
+  html, body, .drawer, .settings-panel, textarea, * {
     scrollbar-width: thin;
     scrollbar-color: var(--theme-primary) transparent;
   }
 }
-html::-webkit-scrollbar,
-body::-webkit-scrollbar,
-.drawer::-webkit-scrollbar,
-.settings-panel::-webkit-scrollbar,
-textarea::-webkit-scrollbar,
+/* Chromium, Edge and Safari: exact 6px square scrollbar. */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -146,10 +142,13 @@ textarea::-webkit-scrollbar,
 ::-webkit-scrollbar-track-piece,
 ::-webkit-scrollbar-corner {
   background: transparent;
+  border: 0;
 }
 ::-webkit-scrollbar-thumb {
   background: var(--theme-primary);
+  border: 0;
   border-radius: 0;
+  box-shadow: none;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--theme-hover);
