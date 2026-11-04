@@ -37,3 +37,56 @@ body:fullscreen .page{padding-top:20px}
 @media(max-width:560px){.topbar{height:62px;padding:0 15px}.brand{font-size:16px}.page{padding:16px 14px}.mixer-heading{align-items:flex-start;flex-direction:column;gap:4px;margin-bottom:13px}.mixer-heading h1{font-size:30px}.mixer-heading p{font-size:12px}.sound-card{padding:16px 13px}.sound-icon{height:28px;width:28px;margin-bottom:12px}.sound-icon svg{height:26px;width:26px}.sound-name-row{gap:5px}.sound-name-row h3{font-size:17px}.sound-card p{font-size:11px;margin:7px 0 16px;min-height:28px}.sound-toggle{width:36px;height:23px}.toggle-dot{width:15px;height:15px}.sound-toggle[aria-pressed="true"] .toggle-dot{transform:translateX(13px)}.player{grid-template-columns:1fr;gap:15px}.player-center{width:100%;order:3}.player-center button{flex:1}.player-right{grid-column:1;grid-template-columns:1fr auto}.player-right label{grid-column:1/-1}.footer{padding-top:14px}}
 @media(max-width:355px){.sound-grid{grid-template-columns:1fr}.sound-card p{min-height:0}.player-center{flex-wrap:wrap}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+/* Position each sound illustration beside its name and description. */
+.sound-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 42px;
+  grid-template-rows: auto auto auto auto;
+  align-content: start;
+  column-gap: 10px;
+}
+.sound-card .sound-icon {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  width: 40px;
+  height: 40px;
+  margin: 0;
+  justify-self: end;
+  align-self: center;
+}
+.sound-card .sound-icon svg {
+  width: 33px;
+  height: 33px;
+}
+.sound-card .sound-name-row {
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+}
+.sound-card > p {
+  grid-column: 1;
+  grid-row: 2;
+}
+.sound-card .volume-label {
+  grid-column: 1 / -1;
+  grid-row: 3;
+}
+.sound-card input[type="range"] {
+  grid-column: 1 / -1;
+  grid-row: 4;
+}
+@media (max-width: 560px) {
+  .sound-card {
+    grid-template-columns: minmax(0, 1fr) 30px;
+    column-gap: 6px;
+  }
+  .sound-card .sound-icon {
+    width: 28px;
+    height: 28px;
+  }
+  .sound-card .sound-icon svg {
+    width: 27px;
+    height: 27px;
+  }
+}
