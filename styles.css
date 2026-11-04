@@ -90,3 +90,28 @@ body:fullscreen .page{padding-top:20px}
     height: 27px;
   }
 }
+
+/* Inline sound icon to the left of its title and description. */
+.sound-card {
+  grid-template-columns: 42px minmax(0, 1fr);
+}
+.sound-card .sound-icon {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  justify-self: start;
+  align-self: start;
+  margin-top: 1px;
+}
+.sound-card .sound-name-row {
+  grid-column: 2;
+  grid-row: 1;
+}
+.sound-card > p {
+  grid-column: 2;
+  grid-row: 2;
+}
+@media (max-width: 560px) {
+  .sound-card {
+    grid-template-columns: 30px minmax(0, 1fr);
+  }
+}
