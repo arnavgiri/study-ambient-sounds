@@ -1,7 +1,7 @@
 "use strict";
 
 const STORAGE_KEY = "biharkalyan.studyAmbient.v1";
-const SOUND_NAMES = ["rain", "forest", "fan", "wind", "white"];
+const SOUND_NAMES = ["rain", "forest", "fan", "wind", "white", "thunder"];
 const THEMES = [
   { id: "midnight", name: "Midnight", swatch: "#101b28" },
   { id: "paper", name: "Warm Paper", swatch: "#f4f0e9" },
@@ -18,8 +18,8 @@ const THEMES = [
 const defaults = {
   theme: "midnight",
   master: 70,
-  active: { rain: true, forest: true, fan: false, wind: false, white: false },
-  volumes: { rain: 55, forest: 45, fan: 40, wind: 45, white: 30 },
+  active: { rain: true, forest: true, fan: false, wind: false, white: false, thunder: false },
+  volumes: { rain: 55, forest: 45, fan: 40, wind: 45, white: 30, thunder: 35 },
   sleepMinutes: 0
 };
 
@@ -88,6 +88,7 @@ class AmbientEngine {
     this.soundGains = new Map();
     this.playing = false;
     this.birdInterval = null;
+    this.thunderInterval = null;
   }
 
   noiseBuffer(kind = "white") {
@@ -162,6 +163,7 @@ class AmbientEngine {
     this.filteredNoise("brown", "lowpass", 650, this.soundGains.get("fan"));
     this.filteredNoise("pink", "lowpass", 470, this.soundGains.get("wind"));
     this.makeSource(this.noiseBuffer("white"), this.soundGains.get("white"));
+    this.thunderBuffer = this.noiseBuffer("brown");
 
     // Subtle fan motor fundamental.
     const hum = this.context.createOscillator();
@@ -219,6 +221,46 @@ class AmbientEngine {
     }
   }
 
+
+  // Layered, softly filtered thunder rumbles are synthesized locally.
+  rumble() {
+    if (!this.playing || !settings.active.thunder || !this.context ||
+        this.context.state !== "running") return;
+    const ctx = this.context;
+    const now = ctx.currentTime;
+    const output = this.soundGains.get("thunder");
+    for (let layer = 0; layer < 3; layer++) {
+      const start = now + layer * 0.42;
+      const source = ctx.createBufferSource();
+      source.buffer = this.thunderBuffer;
+      const lowpass = ctx.createBiquadFilter();
+      lowpass.type = "lowpass";
+      lowpass.frequency.value = 100 + Math.random() * 115;
+      const envelope = ctx.createGain();
+      const intensity = layer === 0 ? 0.8 : 0.45;
+      envelope.gain.setValueAtTime(0.0001, start);
+      envelope.gain.exponentialRampToValueAtTime(
+        intensity, start + 0.32 + layer * 0.13
+      );
+      envelope.gain.exponentialRampToValueAtTime(0.0001, start + 4.8);
+      source.connect(lowpass);
+      lowpass.connect(envelope);
+      envelope.connect(output);
+      source.start(start);
+      source.stop(start + 5);
+      source.onended = () => {
+        source.disconnect();
+        lowpass.disconnect();
+        envelope.disconnect();
+      };
+    }
+  }
+
+  scheduleThunder() {
+    if (this.thunderInterval) clearInterval(this.thunderInterval);
+    this.thunderInterval = setInterval(() => this.rumble(), 12500);
+  }
+
   async play() {
     this.build();
     this.updateLevels();
@@ -226,12 +268,16 @@ class AmbientEngine {
     this.playing = true;
     if (!this.birdInterval) this.birdInterval = setInterval(() => this.chirp(), 3400);
     this.chirp();
+    this.scheduleThunder();
+    this.rumble();
   }
 
   async stop() {
     this.playing = false;
     if (this.birdInterval) clearInterval(this.birdInterval);
     this.birdInterval = null;
+    if (this.thunderInterval) clearInterval(this.thunderInterval);
+    this.thunderInterval = null;
     if (this.context && this.context.state === "running") {
       await this.context.suspend();
     }
