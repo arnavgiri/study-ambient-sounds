@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101b28">
+  <meta name="description" content="A distraction-free ambient sound mixer for study, reading, and relaxation. No downloads or account required.">
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <title>Study Ambient Sounds | BiharKalyan.in</title>
+</head>
+<body data-theme="midnight">
+  <header class="topbar">
+    <a class="brand" href="https://biharkalyan.in" target="_blank" rel="noopener noreferrer" aria-label="BiharKalyan.in home">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 14c3-6 5-6 8 0s5 6 8 0" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/><path d="M4 9c3-6 5-6 8 0s5 6 8 0" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".5"/></svg></span>
+      <span>study<span class="brand-accent">ambient</span></span>
+    </a>
+    <div class="header-actions">
+      <button class="icon-button" id="settingsButton" type="button" aria-label="Open settings" title="Settings" aria-controls="settingsPanel" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="2.5" fill="var(--surface)"/><circle cx="16" cy="17" r="2.5" fill="var(--surface)"/></svg></button>
+      <button class="icon-button" id="fullscreenButton" type="button" aria-label="Enter fullscreen" title="Fullscreen"><svg id="fullscreenIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M8 21H5a2 2 0 0 1-2-2v-3"/></svg></button>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="intro" aria-labelledby="mainTitle">
+      <div class="eyebrow"><span class="live-dot"></span> YOUR PERSONAL FOCUS SPACE</div>
+      <h1 id="mainTitle">Find your <em>quiet.</em></h1>
+      <p>Layer gentle sounds, settle into your work, and let the world fade away.</p>
+      <div class="status-pill" id="playStatus" role="status" aria-live="polite"><span class="status-dot"></span> Ready when you are</div>
+    </section>
+
+    <section class="mixer" aria-label="Ambient sound mixer">
+      <div class="mixer-heading"><h2>Soundscape</h2><span>Blend your own atmosphere</span></div>
+      <div class="sound-grid">
+        <article class="sound-card" data-sound="rain">
+          <div class="sound-icon rain-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 26a11 11 0 0 1 2-21 14 14 0 0 1 24 9 8 8 0 0 1-2 16H12"/><path d="m15 34-3 7m14-7-3 7m14-7-3 7"/></svg></div>
+          <div class="sound-name-row"><h3>Rain</h3><button type="button" class="sound-toggle" data-toggle="rain" aria-label="Toggle rain" aria-pressed="false"><span class="toggle-dot"></span></button></div>
+          <p>Soft, steady rainfall</p>
+          <label class="volume-label" for="volume-rain"><span>Volume</span><output id="value-rain">55%</output></label>
+          <input id="volume-rain" data-volume="rain" type="range" min="0" max="100" value="55" aria-label="Rain volume">
+        </article>
+        <article class="sound-card" data-sound="forest">
+          <div class="sound-icon forest-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 4 8 27h9l-9 10h32l-9-10h9L24 4ZM24 37v7"/></svg></div>
+          <div class="sound-name-row"><h3>Forest</h3><button type="button" class="sound-toggle" data-toggle="forest" aria-label="Toggle forest" aria-pressed="false"><span class="toggle-dot"></span></button></div>
+          <p>Leaves & distant birds</p>
+          <label class="volume-label" for="volume-forest"><span>Volume</span><output id="value-forest">45%</output></label>
+          <input id="volume-forest" data-volume="forest" type="range" min="0" max="100" value="45" aria-label="Forest volume">
+        </article>
+        <article class="sound-card" data-sound="fan">
+          <div class="sound-icon fan-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="4"/><path d="M23 20C10 17 11 7 17 7c8 0 9 8 7 13m4 5c9-10 17-3 14 3-4 8-11 5-14-3m-8 3C17 41 7 39 7 33c0-8 8-9 13-5"/></svg></div>
+          <div class="sound-name-row"><h3>Fan</h3><button type="button" class="sound-toggle" data-toggle="fan" aria-label="Toggle fan" aria-pressed="false"><span class="toggle-dot"></span></button></div>
+          <p>Comforting low hum</p>
+          <label class="volume-label" for="volume-fan"><span>Volume</span><output id="value-fan">40%</output></label>
+          <input id="volume-fan" data-volume="fan" type="range" min="0" max="100" value="40" aria-label="Fan volume">
+        </article>
+        <article class="sound-card" data-sound="wind">
+          <div class="sound-icon wind-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 17h26c11 0 11-12 3-12-5 0-7 3-7 6M5 25h35M5 33h24c11 0 11 12 3 12-5 0-7-3-7-6"/></svg></div>
+          <div class="sound-name-row"><h3>Wind</h3><button type="button" class="sound-toggle" data-toggle="wind" aria-label="Toggle wind" aria-pressed="false"><span class="toggle-dot"></span></button></div>
+          <p>A gentle passing breeze</p>
+          <label class="volume-label" for="volume-wind"><span>Volume</span><output id="value-wind">45%</output></label>
+          <input id="volume-wind" data-volume="wind" type="range" min="0" max="100" value="45" aria-label="Wind volume">
+        </article>
+        <article class="sound-card" data-sound="white">
+          <div class="sound-icon white-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 24h5l4-12 7 24 7-19 5 13 4-6h8"/></svg></div>
+          <div class="sound-name-row"><h3>White Noise</h3><button type="button" class="sound-toggle" data-toggle="white" aria-label="Toggle white noise" aria-pressed="false"><span class="toggle-dot"></span></button></div>
+          <p>Even, soothing static</p>
+          <label class="volume-label" for="volume-white"><span>Volume</span><output id="value-white">30%</output></label>
+          <input id="volume-white" data-volume="white" type="range" min="0" max="100" value="30" aria-label="White noise volume">
+        </article>
+      </div>
+    </section>
+
+    <section class="player" aria-label="Playback controls">
+      <div class="player-left"><div class="visualizer" id="visualizer" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div><div class="player-label">Your soundscape</div><div class="player-detail" id="activeCount">No sounds selected</div></div></div>
+      <div class="player-center"><button class="secondary-button" id="stopButton" type="button">Stop all</button><button class="primary-button" id="playButton" type="button"><span id="playSymbol" aria-hidden="true">▶</span><span id="playLabel">Play sounds</span></button></div>
+      <div class="player-right"><label for="masterVolume">Master volume</label><input id="masterVolume" type="range" min="0" max="100" value="70" aria-label="Master volume"><output id="masterValue">70%</output></div>
+    </section>
+
+    <footer class="footer">Crafted for calm, focused learning. <a href="https://biharkalyan.in" target="_blank" rel="noopener noreferrer">BiharKalyan.in</a><span class="footer-dot">•</span> Sound generated locally in your browser</footer>
+  </main>
+
+  <div class="backdrop" id="backdrop"></div>
+  <aside class="settings-panel" id="settingsPanel" aria-label="Settings" aria-hidden="true">
+    <div class="panel-head"><div><div class="eyebrow panel-eyebrow">MAKE IT YOURS</div><h2>Settings</h2></div><button type="button" class="close-button" id="closeSettings" aria-label="Close settings">&times;</button></div>
+    <h3>Sleep timer</h3>
+    <p class="panel-help">Automatically stop playback after a set time.</p>
+    <div class="timer-presets" id="timerPresets"><button type="button" data-time="0" class="selected">Off</button><button type="button" data-time="15">15 min</button><button type="button" data-time="30">30 min</button><button type="button" data-time="45">45 min</button><button type="button" data-time="60">60 min</button><button type="button" data-time="90">90 min</button></div>
+    <div class="custom-timer"><input id="customTimer" type="number" min="1" max="720" placeholder="Custom minutes" aria-label="Custom sleep timer in minutes"><button id="setCustomTimer" type="button">Set</button></div>
+    <div class="timer-feedback" id="timerFeedback" role="status" aria-live="polite">Sleep timer is off</div>
+    <h3>Color theme</h3>
+    <p class="panel-help">Choose a palette that feels right to you.</p>
+    <div class="theme-grid" id="themeGrid"></div>
+    <div class="panel-foot">Your preferences are saved on this device. No account or tracking is required.</div>
+  </aside>
+
+  <script src="./app.js" defer></script>
+</body>
+</html>
