@@ -117,29 +117,43 @@ body:fullscreen .page{padding-top:20px}
 }
 
 
-/* Consistent low-profile scrollbars for pages and scrollable panels. */
+/* Shared slim scrollbar styling for the page and nested scroll areas. */
 :root {
   --theme-primary: var(--accent);
   --theme-hover: var(--text, var(--fg, var(--accent)));
 }
 html {
   overflow-y: scroll;
-  scrollbar-width: thin;
-  scrollbar-color: var(--theme-primary) transparent;
 }
-body, .drawer, .settings-panel, textarea, [class*="scroll"] {
-  scrollbar-width: thin;
-  scrollbar-color: var(--theme-primary) transparent;
+/* Firefox supports only auto and thin; WebKit browsers use 6px below. */
+@supports not selector(::-webkit-scrollbar) {
+  html, body, .drawer, .settings-panel, textarea {
+    scrollbar-width: thin;
+    scrollbar-color: var(--theme-primary) transparent;
+  }
 }
-::-webkit-scrollbar { width: 6px; height: 6px; background: transparent; }
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+.drawer::-webkit-scrollbar,
+.settings-panel::-webkit-scrollbar,
+textarea::-webkit-scrollbar,
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background: transparent;
+}
 ::-webkit-scrollbar-track,
 ::-webkit-scrollbar-track-piece,
-::-webkit-scrollbar-corner { background: transparent; }
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
 ::-webkit-scrollbar-thumb {
   background: var(--theme-primary);
   border-radius: 0;
 }
-::-webkit-scrollbar-thumb:hover { background: var(--theme-hover); }
+::-webkit-scrollbar-thumb:hover {
+  background: var(--theme-hover);
+}
 a {
   text-decoration-thickness: 1px;
   text-underline-offset: 4px;
