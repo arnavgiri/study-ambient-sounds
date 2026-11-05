@@ -4,8 +4,6 @@ A calm, distraction-free ambient sound mixer for students.
 
 **Live Demo:** [Study Ambient Sounds](https://arnavgiri.github.io/study-ambient-sounds/)
 
-**Website:** [BiharKalyan.in](https://biharkalyan.in)
-
 ## Features
 
 - Six generated ambient soundscapes: rain, forest (with subtle bird chirps), fan, wind, white noise, and distant thunder
@@ -27,7 +25,7 @@ A calm, distraction-free ambient sound mixer for students.
 ## Publish using GitHub Pages
 
 1. Create a public repository called `study-ambient-sounds`.
-2. Upload `index.html`, `styles.css`, `app.js`, `favicon.svg`, and `README.md` into the repository root.
+2. Keep these files together in the project folder.
 3. In **Settings → Pages**, choose **Deploy from a branch**, then `main` and `/(root)`.
 4. The published project is available at [https://arnavgiri.github.io/study-ambient-sounds/](https://arnavgiri.github.io/study-ambient-sounds/).
 
@@ -51,4 +49,4 @@ The app stores preferences only in your browser. To clear them, remove the websi
 
 ## Author
 
-Created for [BiharKalyan.in](https://biharkalyan.in) by [Arnav Giri](https://github.com/arnavgiri).
+Created by Arnav Giri.
